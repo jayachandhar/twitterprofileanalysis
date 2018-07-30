@@ -18,13 +18,13 @@ public class TweetService {
     }
 
     private void getTweetAnalysis(UserProfile userProfile) throws TwitterException {
-        List<Status> statuses = new ArrayList<Status>();
+        List<Status> statuses;
         Paging paging = new Paging(1, 100);
         statuses = authenticatedTwitter.getUserTimeline(userProfile.getScreenName(), paging);
         StringBuilder content = new StringBuilder();
-        Map<Integer, Integer> tweetTiming = new HashMap<Integer, Integer>();
-        List<HashtagEntity> hashtags = new ArrayList<HashtagEntity>();
-        List<UserMentionEntity> userMentionEntities=new ArrayList<UserMentionEntity>();
+        Map<Integer, Integer> tweetTiming = new HashMap<>();
+        List<HashtagEntity> hashtags = new ArrayList<>();
+        List<UserMentionEntity> userMentionEntities=new ArrayList<>();
 
         for (Status status : statuses) {
             //uncomment to avoid replies
@@ -33,7 +33,7 @@ public class TweetService {
             //uncomment to avoid retweets
             // content.append(status.getText().contains("RT") ? "" : status.getText() + " ");
 
-            content.append(status.getText() + " ");
+            content.append(status.getText().concat(" "));
             hashtags.addAll(Arrays.asList(status.getHashtagEntities()));
             userMentionEntities.addAll(Arrays.asList(status.getUserMentionEntities()));
             Integer hour = Integer.valueOf(sdf.format(status.getCreatedAt()));
@@ -51,8 +51,8 @@ public class TweetService {
                     userProfile.getHashtagBycount().get(hashtag) + 1 : 1);
         }
         userProfile.setTweetTiming(tweetTiming);
-        Map<String, Integer> wordsCounts = new HashMap<String, Integer>();
-        List<Map.Entry<String, Integer>> list = new LinkedList<Map.Entry<String, Integer>>();
+        Map<String, Integer> wordsCounts = new HashMap<>();
+        List<Map.Entry<String, Integer>> list = new LinkedList<>();
         for (String i : content.toString().split(" ")) {
 
             if (StringUtils.isAlpha(i) && StringUtils.isAsciiPrintable(i))
@@ -71,7 +71,6 @@ public class TweetService {
         for (Map.Entry<String,Integer> wordByCount:list)
         {
             userProfile.getWordByFrequency().put(wordByCount.getKey(),wordByCount.getValue());
-
         }
         String tweetFrequency = calcStatusFrequency(statuses.get(0).getCreatedAt().getTime(),
                 statuses.get(statuses.size() - 1).getCreatedAt().getTime());
@@ -99,7 +98,7 @@ public class TweetService {
     private String calcStatusFrequency(long recent, long start) {
         long days = (recent - start) / (1000 * 60 * 60 * 24);
         float avgTweetCount = (float) 100 / days;
-        String frequency = null;
+        String frequency ;
         if (avgTweetCount > 5) //more than 5 tweets per day on average-Frequent
             frequency = "Frequent";
         else {
