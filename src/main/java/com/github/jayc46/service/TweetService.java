@@ -92,7 +92,7 @@ public class TweetService {
         userProfile.setTweetCount(user.getStatusesCount());
         userProfile.setFollowingCount(user.getFriendsCount());
         userProfile.setFollowerCount(user.getFollowersCount());
-        userProfile.setProfileURL(user.getProfileImageURL());
+        userProfile.setProfileURL(user.getBiggerProfileImageURL());
         userProfile.setRatio((float) userProfile.getFollowerCount() / userProfile.getFollowingCount());
     }
 
