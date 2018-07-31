@@ -1,4 +1,4 @@
-package com.github.jayc46.model;
+package com.github.jayachandhar.model;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

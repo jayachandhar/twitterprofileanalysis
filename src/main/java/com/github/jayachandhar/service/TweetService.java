@@ -1,6 +1,7 @@
-package com.github.jayc46.service;
+package com.github.jayachandhar.service;
 
-import com.github.jayc46.model.UserProfile;
+import com.github.jayachandhar.model.UserProfile;
+import com.github.jayachandhar.utils.Util;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import twitter4j.*;
@@ -54,13 +55,19 @@ public class TweetService {
         userProfile.setTweetTiming(tweetTiming);
         Map<String, Integer> wordsCounts = new HashMap<>();
         List<Map.Entry<String, Integer>> list = new LinkedList<>();
-        for (String i : content.toString().split(" ")) {
-
-            if (StringUtils.isAlpha(i) && StringUtils.isAsciiPrintable(i))
-                wordsCounts.put(i, wordsCounts.containsKey(i) ? wordsCounts.get(i) + 1 : 1);
+        for (String word : content.toString().split(" ")) {
+            if (StringUtils.isAlpha(word) && StringUtils.isAsciiPrintable(word))
+                if (!Util.WORDS_TO_AVOID.contains(word.toLowerCase()))
+                    wordsCounts.put(word.toLowerCase(), wordsCounts.containsKey(word.toLowerCase()) ?
+                            wordsCounts.get(word.toLowerCase()) + 1 : 1);
+        }
+        Map<String,Integer> wordsCountsDup=new HashMap<>(wordsCounts);
+        for(Map.Entry<String,Integer>wordcount:wordsCountsDup.entrySet()){
+           if(wordcount.getValue()==1)
+               wordsCounts.remove(wordcount.getKey());
         }
 
-        userProfile.setRetweetCount(wordsCounts.remove("RT"));
+        userProfile.setRetweetCount(wordsCounts.remove("rt"));
         userProfile.setOriginalTweetCount(100 - userProfile.getRetweetCount());
 
         list.addAll(wordsCounts.entrySet());

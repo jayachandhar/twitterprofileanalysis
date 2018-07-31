@@ -1,6 +1,6 @@
-package com.github.jayc46.controller;
+package com.github.jayachandhar.controller;
 
-import com.github.jayc46.service.TweetService;
+import com.github.jayachandhar.service.TweetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

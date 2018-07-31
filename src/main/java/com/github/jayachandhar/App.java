@@ -1,4 +1,4 @@
-package com.github.jayc46;
+package com.github.jayachandhar;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
