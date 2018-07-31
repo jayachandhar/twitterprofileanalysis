@@ -1,6 +1,5 @@
 package com.github.jayc46.service;
 
-import com.github.jayc46.model.MentionedProfile;
 import com.github.jayc46.model.UserProfile;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -42,19 +41,11 @@ public class TweetService {
             tweetTiming.put(hour, tweetTiming.containsKey(hour) ? tweetTiming.get(hour) + 1 : 1);
 
         }
-        List<MentionedProfile> mentionedProfiles = new LinkedList<>();
         for (UserMentionEntity userMentionEntity : userMentionEntities) {
             String screenName = userMentionEntity.getScreenName();
-            if (mentionedProfiles.contains(screenName)) {
-                mentionedProfiles.get(mentionedProfiles.indexOf(screenName)).increaseCount();
-            } else {
-                MentionedProfile mentionedProfile = new MentionedProfile();
-                mentionedProfile.setScreenName(screenName);
-                mentionedProfile.setTinyImageURL(authenticatedTwitter.showUser(screenName).getMiniProfileImageURL());
-                mentionedProfiles.add(mentionedProfile);
-            }
+            userProfile.getMentionsByCount().put(screenName, userProfile.getMentionsByCount().containsKey(screenName) ?
+                    userProfile.getMentionsByCount().get(screenName) + 1 : 1);
         }
-        userProfile.getMentionedProfiles().addAll(mentionedProfiles);
         for (HashtagEntity hashtagEntity : hashtags) {
             String hashtag = hashtagEntity.getText();
             userProfile.getHashtagBycount().put(hashtag, userProfile.getHashtagBycount().containsKey(hashtag) ?
