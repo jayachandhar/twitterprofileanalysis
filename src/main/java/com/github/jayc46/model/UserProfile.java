@@ -1,6 +1,8 @@
 package com.github.jayc46.model;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class UserProfile {
@@ -23,7 +25,7 @@ public class UserProfile {
     private String tweetPerDay;
     private Map<String, Integer> wordByFrequency=new LinkedHashMap<String, Integer>();
     private Map<String, Integer> hashtagBycount=new LinkedHashMap<String, Integer>();
-    private Map<String, Integer> mentionsByCount=new LinkedHashMap<String, Integer>();
+    private List<MentionedProfile> mentionedProfiles=new ArrayList<>();
     private Map<Integer, Integer> tweetTiming;
 
     public String getScreenName() {
@@ -178,12 +180,12 @@ public class UserProfile {
         this.hashtagBycount = hashtagBycount;
     }
 
-    public Map<String, Integer> getMentionsByCount() {
-        return mentionsByCount;
+    public List<MentionedProfile> getMentionedProfiles() {
+        return mentionedProfiles;
     }
 
-    public void setMentionsByCount(Map<String, Integer> mentionsByCount) {
-        this.mentionsByCount = mentionsByCount;
+    public void setMentionedProfiles(List<MentionedProfile> mentionedProfiles) {
+        this.mentionedProfiles = mentionedProfiles;
     }
 
     public Map<Integer, Integer> getTweetTiming() {
@@ -216,7 +218,7 @@ public class UserProfile {
                 ", tweetPerDay='" + tweetPerDay + '\'' +
                 ", wordByFrequency=" + wordByFrequency +
                 ", hashtagBycount=" + hashtagBycount +
-                ", mentionsByCount=" + mentionsByCount +
+                ", mentionedProfiles=" + mentionedProfiles +
                 ", tweetTiming=" + tweetTiming +
                 '}';
     }

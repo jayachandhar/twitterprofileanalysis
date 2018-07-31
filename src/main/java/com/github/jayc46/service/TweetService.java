@@ -1,5 +1,6 @@
 package com.github.jayc46.service;
 
+import com.github.jayc46.model.MentionedProfile;
 import com.github.jayc46.model.UserProfile;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -7,6 +8,7 @@ import twitter4j.*;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+
 @Service
 public class TweetService {
     private Twitter authenticatedTwitter;
@@ -24,7 +26,7 @@ public class TweetService {
         StringBuilder content = new StringBuilder();
         Map<Integer, Integer> tweetTiming = new HashMap<>();
         List<HashtagEntity> hashtags = new ArrayList<>();
-        List<UserMentionEntity> userMentionEntities=new ArrayList<>();
+        List<UserMentionEntity> userMentionEntities = new ArrayList<>();
 
         for (Status status : statuses) {
             //uncomment to avoid replies
@@ -40,11 +42,19 @@ public class TweetService {
             tweetTiming.put(hour, tweetTiming.containsKey(hour) ? tweetTiming.get(hour) + 1 : 1);
 
         }
-        for (UserMentionEntity userMentionEntity:userMentionEntities){
-            String screenName=userMentionEntity.getScreenName();
-            userProfile.getMentionsByCount().put(screenName,userProfile.getMentionsByCount().containsKey(screenName)?
-                    userProfile.getMentionsByCount().get(screenName)+1:1);
+        List<MentionedProfile> mentionedProfiles = new LinkedList<>();
+        for (UserMentionEntity userMentionEntity : userMentionEntities) {
+            String screenName = userMentionEntity.getScreenName();
+            if (mentionedProfiles.contains(screenName)) {
+                mentionedProfiles.get(mentionedProfiles.indexOf(screenName)).increaseCount();
+            } else {
+                MentionedProfile mentionedProfile = new MentionedProfile();
+                mentionedProfile.setScreenName(screenName);
+                mentionedProfile.setTinyImageURL(authenticatedTwitter.showUser(screenName).getMiniProfileImageURL());
+                mentionedProfiles.add(mentionedProfile);
+            }
         }
+        userProfile.getMentionedProfiles().addAll(mentionedProfiles);
         for (HashtagEntity hashtagEntity : hashtags) {
             String hashtag = hashtagEntity.getText();
             userProfile.getHashtagBycount().put(hashtag, userProfile.getHashtagBycount().containsKey(hashtag) ?
@@ -68,9 +78,8 @@ public class TweetService {
                 return o2.getValue().compareTo(o1.getValue());
             }
         });
-        for (Map.Entry<String,Integer> wordByCount:list)
-        {
-            userProfile.getWordByFrequency().put(wordByCount.getKey(),wordByCount.getValue());
+        for (Map.Entry<String, Integer> wordByCount : list) {
+            userProfile.getWordByFrequency().put(wordByCount.getKey(), wordByCount.getValue());
         }
         String tweetFrequency = calcStatusFrequency(statuses.get(0).getCreatedAt().getTime(),
                 statuses.get(statuses.size() - 1).getCreatedAt().getTime());
@@ -99,7 +108,7 @@ public class TweetService {
     private String calcStatusFrequency(long recent, long start) {
         long days = (recent - start) / (1000 * 60 * 60 * 24);
         float avgTweetCount = (float) 100 / days;
-        String frequency ;
+        String frequency;
         if (avgTweetCount > 5) //more than 5 tweets per day on average-Frequent
             frequency = "Frequent";
         else {
