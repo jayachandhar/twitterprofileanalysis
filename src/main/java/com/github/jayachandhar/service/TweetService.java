@@ -4,24 +4,10 @@ import com.github.jayachandhar.model.UserProfile;
 import com.github.jayachandhar.utils.Util;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import twitter4j.HashtagEntity;
-import twitter4j.Paging;
-import twitter4j.Status;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.User;
-import twitter4j.UserMentionEntity;
+import twitter4j.*;
+
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class TweetService {
@@ -75,10 +61,10 @@ public class TweetService {
                     wordsCounts.put(word.toLowerCase(), wordsCounts.containsKey(word.toLowerCase()) ?
                             wordsCounts.get(word.toLowerCase()) + 1 : 1);
         }
-        Map<String,Integer> wordsCountsDup=new HashMap<>(wordsCounts);
-        for(Map.Entry<String,Integer>wordcount:wordsCountsDup.entrySet()){
-           if(wordcount.getValue()==1)
-               wordsCounts.remove(wordcount.getKey());
+        Map<String, Integer> wordsCountsDup = new HashMap<>(wordsCounts);
+        for (Map.Entry<String, Integer> wordcount : wordsCountsDup.entrySet()) {
+            if (wordcount.getValue() == 1)
+                wordsCounts.remove(wordcount.getKey());
         }
 
         userProfile.setRetweetCount(wordsCounts.remove("rt"));
