@@ -4,10 +4,24 @@ import com.github.jayachandhar.model.UserProfile;
 import com.github.jayachandhar.utils.Util;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import twitter4j.*;
-
+import twitter4j.HashtagEntity;
+import twitter4j.Paging;
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.User;
+import twitter4j.UserMentionEntity;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 @Service
 public class TweetService {
