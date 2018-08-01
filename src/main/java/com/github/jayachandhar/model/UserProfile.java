@@ -11,8 +11,6 @@ public class UserProfile {
     private String location;
     private String language;
     private String bio;
-    private String profileURL;
-    private String timeZone;
     private int followerCount;
     private int followingCount;
     private int tweetCount;
@@ -80,22 +78,6 @@ public class UserProfile {
 
     public void setBio(String bio) {
         this.bio = bio;
-    }
-
-    public String getProfileURL() {
-        return profileURL;
-    }
-
-    public void setProfileURL(String profileURL) {
-        this.profileURL = profileURL;
-    }
-
-    public String getTimeZone() {
-        return timeZone;
-    }
-
-    public void setTimeZone(String timeZone) {
-        this.timeZone = timeZone;
     }
 
     public int getFollowerCount() {
@@ -204,8 +186,6 @@ public class UserProfile {
                 ", location='" + location + '\'' +
                 ", language='" + language + '\'' +
                 ", bio='" + bio + '\'' +
-                ", profileURL='" + profileURL + '\'' +
-                ", timeZone='" + timeZone + '\'' +
                 ", followerCount=" + followerCount +
                 ", followingCount=" + followingCount +
                 ", tweetCount=" + tweetCount +

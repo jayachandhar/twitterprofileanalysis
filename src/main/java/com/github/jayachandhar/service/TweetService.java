@@ -94,12 +94,10 @@ public class TweetService {
         String language = loc.getDisplayLanguage(loc);
         userProfile.setLanguage(language);
         userProfile.setBio(user.getDescription());
-        userProfile.setProfileURL(user.getURL());
-        userProfile.setTimeZone(user.getTimeZone());
         userProfile.setTweetCount(user.getStatusesCount());
         userProfile.setFollowingCount(user.getFriendsCount());
         userProfile.setFollowerCount(user.getFollowersCount());
-        userProfile.setImageURL(user.getOriginalProfileImageURLHttps());
+        userProfile.setImageURL(user.getMiniProfileImageURLHttps());
         userProfile.setRatio((float) userProfile.getFollowerCount() / userProfile.getFollowingCount());
     }
 
