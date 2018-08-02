@@ -150,8 +150,11 @@
 			$(Object.keys(userProfile.wordByFrequency)).each(function (index, data) {
 				$("#wordusagebody").append('<tr> <td>' + data + '</td><td>' + userProfile.wordByFrequency[data] + '</td></tr>')
 			});
-		} else
-			console.error(userProfile)
+		}
+	}).fail(function (err) {
+		console.error(err.responseText);
+		alert(err.responseText);
+		window.location.href = "/index.html"
 	});
 	$(".loader").fadeOut(5000);
 	(function ($) {
