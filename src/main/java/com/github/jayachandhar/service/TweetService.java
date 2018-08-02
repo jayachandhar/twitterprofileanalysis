@@ -43,7 +43,6 @@ public class TweetService {
             userMentionEntities.addAll(Arrays.asList(status.getUserMentionEntities()));
             Integer hour = Integer.valueOf(sdf.format(status.getCreatedAt()));
             tweetTiming.put(hour, tweetTiming.containsKey(hour) ? tweetTiming.get(hour) + 1 : 1);
-
         }
         for (UserMentionEntity userMentionEntity : userMentionEntities) {
             String screenName = userMentionEntity.getScreenName();
@@ -70,8 +69,9 @@ public class TweetService {
                 wordsCounts.remove(wordcount.getKey());
         }
 
-        userProfile.setRetweetCount(wordsCounts.remove("rt"));
-        userProfile.setOriginalTweetCount(100 - userProfile.getRetweetCount());
+        userProfile.setRetweetCount(wordsCounts.containsKey("rt") ? wordsCounts.remove("rt") : 0);
+        userProfile.setOriginalTweetCount(userProfile.getRetweetCount() == 0 ?
+                userProfile.getTweetCount() : 100 - userProfile.getRetweetCount());
 
         userProfile.setWordByFrequency(Util.sortMap(wordsCounts));
         userProfile.setMentionsByCount(Util.sortMap(userProfile.getMentionsByCount()));
@@ -96,7 +96,8 @@ public class TweetService {
         userProfile.setFollowingCount(user.getFriendsCount());
         userProfile.setFollowerCount(user.getFollowersCount());
         userProfile.setImageURL(user.getProfileImageURLHttps());
-        userProfile.setRatio((float) userProfile.getFollowerCount() / userProfile.getFollowingCount());
+        userProfile.setRatio((float) userProfile.getFollowerCount() / (userProfile.getFollowingCount() == 0 ?
+                1 : userProfile.getFollowingCount()));
     }
 
     private String calcStatusFrequency(long recent, long start) {
