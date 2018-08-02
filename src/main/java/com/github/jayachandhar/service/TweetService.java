@@ -8,6 +8,8 @@ import twitter4j.*;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.TimeZone;
+
 
 @Service
 public class TweetService {
@@ -17,6 +19,7 @@ public class TweetService {
     public TweetService() {
         authenticatedTwitter = TwitterFactory.getSingleton();
         sdf = new SimpleDateFormat("HH");
+        sdf.setTimeZone(TimeZone.getTimeZone("IST"));
     }
 
     private void getTweetAnalysis(UserProfile userProfile) throws TwitterException {
@@ -24,7 +27,7 @@ public class TweetService {
         Paging paging = new Paging(1, 100);
         statuses = authenticatedTwitter.getUserTimeline(userProfile.getScreenName(), paging);
         StringBuilder content = new StringBuilder();
-        Map<Integer, Integer> tweetTiming = new HashMap<>();
+        Map<Integer, Integer> tweetTiming = new TreeMap<>();
         List<HashtagEntity> hashtags = new ArrayList<>();
         List<UserMentionEntity> userMentionEntities = new ArrayList<>();
 
@@ -54,7 +57,7 @@ public class TweetService {
         }
         userProfile.setTweetTiming(tweetTiming);
         Map<String, Integer> wordsCounts = new HashMap<>();
-        List<Map.Entry<String, Integer>> list = new LinkedList<>();
+        // List<Map.Entry<String, Integer>> list = new LinkedList<>();
         for (String word : content.toString().split(" ")) {
             if (StringUtils.isAlpha(word) && StringUtils.isAsciiPrintable(word))
                 if (!Util.WORDS_TO_AVOID.contains(word.toLowerCase()))
@@ -63,22 +66,17 @@ public class TweetService {
         }
         Map<String, Integer> wordsCountsDup = new HashMap<>(wordsCounts);
         for (Map.Entry<String, Integer> wordcount : wordsCountsDup.entrySet()) {
-            if (wordcount.getValue() == 1)
+            if (wordcount.getValue() < 3)
                 wordsCounts.remove(wordcount.getKey());
         }
 
         userProfile.setRetweetCount(wordsCounts.remove("rt"));
         userProfile.setOriginalTweetCount(100 - userProfile.getRetweetCount());
 
-        list.addAll(wordsCounts.entrySet());
-        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
-            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
-                return o2.getValue().compareTo(o1.getValue());
-            }
-        });
-        for (Map.Entry<String, Integer> wordByCount : list) {
-            userProfile.getWordByFrequency().put(wordByCount.getKey(), wordByCount.getValue());
-        }
+        userProfile.setWordByFrequency(Util.sortMap(wordsCounts));
+        userProfile.setMentionsByCount(Util.sortMap(userProfile.getMentionsByCount()));
+        userProfile.setHashtagBycount(Util.sortMap(userProfile.getHashtagBycount()));
+
         String tweetFrequency = calcStatusFrequency(statuses.get(0).getCreatedAt().getTime(),
                 statuses.get(statuses.size() - 1).getCreatedAt().getTime());
         userProfile.setStatusFrequency(tweetFrequency.split(":")[0]);
@@ -97,7 +95,7 @@ public class TweetService {
         userProfile.setTweetCount(user.getStatusesCount());
         userProfile.setFollowingCount(user.getFriendsCount());
         userProfile.setFollowerCount(user.getFollowersCount());
-        userProfile.setImageURL(user.getMiniProfileImageURLHttps());
+        userProfile.setImageURL(user.getProfileImageURLHttps());
         userProfile.setRatio((float) userProfile.getFollowerCount() / userProfile.getFollowingCount());
     }
 
@@ -123,4 +121,5 @@ public class TweetService {
         getTweetAnalysis(userProfile);
         return userProfile;
     }
+
 }
