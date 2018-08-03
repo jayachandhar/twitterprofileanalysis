@@ -6,6 +6,7 @@
 			$("#profileimage").attr("src", userProfile.imageURL);
 			$("#name").text(userProfile.name);
 			$("#screenName").text(userProfile.screenName);
+			$("#screenName").attr("href","https://twitter.com/"+userProfile.screenName);
 			var date = new Date(Date(userProfile.joinedOn.toString));
 			$("#joinedOn").text(date.toLocaleString());
 			$("#location").text(userProfile.location);
@@ -160,14 +161,14 @@
 			}
 			if (Object.keys(userProfile.mentionsByCount).length != 0) {
 				$(Object.keys(userProfile.mentionsByCount)).each(function (index, data) {
-					$("#mentionsBody").append('<tr> <td><a href="https://www.twitter.com/' + data + '">' + data + '</a></td><td>' + userProfile.mentionsByCount[data] + '</td></tr>')
+					$("#mentionsBody").append('<tr> <td><a target="_blank" href="https://www.twitter.com/' + data + '">' + data + '</a></td><td>' + userProfile.mentionsByCount[data] + '</td></tr>')
 				});
 			} else {
 				$("#mentionsdiv").remove();
 			}
 			if (Object.keys(userProfile.hashtagBycount).length != 0) {
 				$(Object.keys(userProfile.hashtagBycount)).each(function (index, data) {
-					$("#hashtagsbody").append('<tr> <td><a href="https://www.twitter.com/hashtag/' + data + '">' + data + '</a></td><td>' + userProfile.hashtagBycount[data] + '</td></tr>')
+					$("#hashtagsbody").append('<tr> <td><a target="_blank" href="https://www.twitter.com/hashtag/' + data + '">' + data + '</a></td><td>' + userProfile.hashtagBycount[data] + '</td></tr>')
 				});
 			} else {
 				$("#hashtagdiv").remove();
