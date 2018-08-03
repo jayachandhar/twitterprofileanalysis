@@ -15,6 +15,7 @@
 			$("#ratio").text(userProfile.ratio);
 			$("#statusFrequency").text(userProfile.statusFrequency);
 			$("#tweetPerDay").text(userProfile.tweetPerDay);
+
 			var ctx = $("#FFchart");
 			if (ctx) {
 				ctx.height = 280;
@@ -59,6 +60,11 @@
 					}
 				});
 			}
+			if (userProfile.followerCount==0 && userProfile.followingCount ==0){
+			$("#ffdiv").remove();}
+
+
+			if(userProfile.tweetCount!=0){
 			var ctx = $("#TweetChart");
 			if (ctx) {
 				ctx.height = 280;
@@ -102,6 +108,11 @@
 					}
 				});
 			}
+			}
+			else{
+			$("#tweetsdiv").remove();
+			}
+			if(Object.keys(userProfile.tweetTiming).length!=0){
 			var ctx = $("#timingChart");
 			if (ctx) {
 				ctx.height = 280;
@@ -130,7 +141,10 @@
 						},
 						scales: {
 							xAxes: [{
-								ticks: {}
+								scaleLabel: {
+                                        display: true,
+                                        labelString: 'Hours(in 24 hours format)'
+                                      }
 							}],
 							yAxes: [{
 								ticks: {
@@ -141,15 +155,34 @@
 					}
 				});
 			}
+			}
+			else{
+			$("#timingsection").remove();
+			}
+			if(Object.keys(userProfile.mentionsByCount).length!=0){
 			$(Object.keys(userProfile.mentionsByCount)).each(function (index, data) {
 				$("#mentionsBody").append('<tr> <td><a href="https://www.twitter.com/' + data + '">' + data + '</a></td><td>' + userProfile.mentionsByCount[data] + '</td></tr>')
 			});
+			}
+			else{
+			$("#mentionsdiv").remove();
+			}
+			if(Object.keys(userProfile.hashtagBycount).length!=0){
 			$(Object.keys(userProfile.hashtagBycount)).each(function (index, data) {
 				$("#hashtagsbody").append('<tr> <td><a href="https://www.twitter.com/hashtag/' + data + '">' + data + '</a></td><td>' + userProfile.hashtagBycount[data] + '</td></tr>')
 			});
+			}
+			else{
+			$("#hashtagdiv").remove();
+			}
+			if(Object.keys(userProfile.wordByFrequency).length!=0){
 			$(Object.keys(userProfile.wordByFrequency)).each(function (index, data) {
 				$("#wordusagebody").append('<tr> <td>' + data + '</td><td>' + userProfile.wordByFrequency[data] + '</td></tr>')
 			});
+			}
+			else{
+			$("#wordusagediv").remove();
+			}
 		}
 	}).fail(function (err) {
 		console.error(err.responseText);

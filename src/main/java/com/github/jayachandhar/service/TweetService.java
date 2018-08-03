@@ -2,6 +2,7 @@ package com.github.jayachandhar.service;
 
 import com.github.jayachandhar.model.UserProfile;
 import com.github.jayachandhar.utils.Util;
+import org.apache.commons.lang3.LocaleUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import twitter4j.*;
@@ -30,7 +31,9 @@ public class TweetService {
         Map<Integer, Integer> tweetTiming = new TreeMap<>();
         List<HashtagEntity> hashtags = new ArrayList<>();
         List<UserMentionEntity> userMentionEntities = new ArrayList<>();
-
+        if (statuses.size() == 0) {
+            return;
+        }
         for (Status status : statuses) {
             //uncomment to avoid replies
             // content.append(status.getInReplyToScreenName() != null ? "" : status.getText() + " ");
@@ -71,7 +74,7 @@ public class TweetService {
 
         userProfile.setRetweetCount(wordsCounts.containsKey("rt") ? wordsCounts.remove("rt") : 0);
         userProfile.setOriginalTweetCount(userProfile.getRetweetCount() == 0 ?
-                userProfile.getTweetCount() : 100 - userProfile.getRetweetCount());
+                userProfile.getTweetCount() : statuses.size() - userProfile.getRetweetCount());
 
         userProfile.setWordByFrequency(Util.sortMap(wordsCounts));
         userProfile.setMentionsByCount(Util.sortMap(userProfile.getMentionsByCount()));
@@ -85,13 +88,13 @@ public class TweetService {
 
     private void profileAnalysis(UserProfile userProfile) throws TwitterException {
         User user = authenticatedTwitter.showUser(userProfile.getScreenName());
-        userProfile.setName(user.getName());
-        userProfile.setJoinedOn(user.getCreatedAt().toString());
-        userProfile.setLocation(user.getLocation());
-        Locale loc = new Locale(user.getLang());
-        String language = loc.getDisplayLanguage(loc);
+        userProfile.setName(StringUtils.isBlank(user.getName()) ? "Not Available" : user.getName());
+        userProfile.setJoinedOn(StringUtils.isBlank(user.getCreatedAt().toString()) ? "Not Available" : user.getCreatedAt().toString());
+        userProfile.setLocation(StringUtils.isBlank(user.getLocation()) ? "Not Available" : user.getLocation());
+        Locale loc = LocaleUtils.toLocale(user.getLang().contains("-") ? user.getLang().split("-")[0] + "_" + user.getLang().split("-")[1].toUpperCase() : user.getLang());
+        String language = loc.getDisplayLanguage();
         userProfile.setLanguage(language);
-        userProfile.setBio(user.getDescription());
+        userProfile.setBio(StringUtils.isBlank(user.getDescription()) ? "Not Available" : user.getDescription());
         userProfile.setTweetCount(user.getStatusesCount());
         userProfile.setFollowingCount(user.getFriendsCount());
         userProfile.setFollowerCount(user.getFollowersCount());
