@@ -60,128 +60,124 @@
 					}
 				});
 			}
-			if (userProfile.followerCount==0 && userProfile.followingCount ==0){
-			$("#ffdiv").remove();}
+			if (userProfile.followerCount == 0 && userProfile.followingCount == 0) {
+				$("#ffdiv").remove();
+			}
 
 
-			if(userProfile.tweetCount!=0){
-			var ctx = $("#TweetChart");
-			if (ctx) {
-				ctx.height = 280;
-				var myChart = new Chart(ctx, {
-					type: 'doughnut',
-					data: {
-						datasets: [{
-							data: [userProfile.originalTweetCount, userProfile.retweetCount],
-							backgroundColor: [
-								'#00b5e9',
-								'#fa4251'
-							],
-							hoverBackgroundColor: [
-								'#00b5e9',
-								'#fa4251'
-							],
-							borderWidth: [
-								0, 0
-							],
-							hoverBorderColor: [
-								'transparent',
-								'transparent'
-							]
-						}],
-						labels: [
-							'Original Tweets',
-							'Retweets'
-						]
-					},
-					options: {
-						maintainAspectRatio: false,
-						responsive: true,
-						cutoutPercentage: 55,
-						animation: {
-							animateScale: true,
-							animateRotate: true
-						},
-						legend: {
-							display: false
-						}
-					}
-				});
-			}
-			}
-			else{
-			$("#tweetsdiv").remove();
-			}
-			if(Object.keys(userProfile.tweetTiming).length!=0){
-			var ctx = $("#timingChart");
-			if (ctx) {
-				ctx.height = 280;
-				var myChart = new Chart(ctx, {
-					type: 'bar',
-					data: {
-						labels: Object.keys(userProfile.tweetTiming),
-						datasets: [{
-							label: "Number of tweets",
-							data: Object.values(userProfile.tweetTiming),
-							borderColor: "rgba(0, 123, 255, 0.9)",
-							borderWidth: "0",
-							backgroundColor: "rgba(0, 123, 255, 0.5)"
-						}]
-					},
-					options: {
-						maintainAspectRatio: false,
-						responsive: true,
-						cutoutPercentage: 55,
-						animation: {
-							animateScale: true,
-							animateRotate: true
-						},
-						legend: {
-							position: 'top',
-						},
-						scales: {
-							xAxes: [{
-								scaleLabel: {
-                                        display: true,
-                                        labelString: 'Hours(in 24 hours format)'
-                                      }
+			if (userProfile.tweetCount != 0) {
+				var ctx = $("#TweetChart");
+				if (ctx) {
+					ctx.height = 280;
+					var myChart = new Chart(ctx, {
+						type: 'doughnut',
+						data: {
+							datasets: [{
+								data: [userProfile.originalTweetCount, userProfile.retweetCount],
+								backgroundColor: [
+									'#00b5e9',
+									'#fa4251'
+								],
+								hoverBackgroundColor: [
+									'#00b5e9',
+									'#fa4251'
+								],
+								borderWidth: [
+									0, 0
+								],
+								hoverBorderColor: [
+									'transparent',
+									'transparent'
+								]
 							}],
-							yAxes: [{
-								ticks: {
-									beginAtZero: true,
-								}
-							}]
+							labels: [
+								'Original Tweets',
+								'Retweets'
+							]
+						},
+						options: {
+							maintainAspectRatio: false,
+							responsive: true,
+							cutoutPercentage: 55,
+							animation: {
+								animateScale: true,
+								animateRotate: true
+							},
+							legend: {
+								display: false
+							}
 						}
-					}
+					});
+				}
+			} else {
+				$("#tweetsdiv").remove();
+			}
+			if (Object.keys(userProfile.tweetTiming).length != 0) {
+				var ctx = $("#timingChart");
+				if (ctx) {
+					ctx.height = 280;
+					var myChart = new Chart(ctx, {
+						type: 'bar',
+						data: {
+							labels: Object.keys(userProfile.tweetTiming),
+							datasets: [{
+								label: "Number of tweets",
+								data: Object.values(userProfile.tweetTiming),
+								borderColor: "rgba(0, 123, 255, 0.9)",
+								borderWidth: "0",
+								backgroundColor: "rgba(0, 123, 255, 0.5)"
+							}]
+						},
+						options: {
+							maintainAspectRatio: false,
+							responsive: true,
+							cutoutPercentage: 55,
+							animation: {
+								animateScale: true,
+								animateRotate: true
+							},
+							legend: {
+								position: 'top',
+							},
+							scales: {
+								xAxes: [{
+									scaleLabel: {
+										display: true,
+										labelString: 'Hours(in 24 hours format)'
+									}
+								}],
+								yAxes: [{
+									ticks: {
+										beginAtZero: true,
+									}
+								}]
+							}
+						}
+					});
+				}
+			} else {
+				$("#timingsection").remove();
+			}
+			if (Object.keys(userProfile.mentionsByCount).length != 0) {
+				$(Object.keys(userProfile.mentionsByCount)).each(function (index, data) {
+					$("#mentionsBody").append('<tr> <td><a href="https://www.twitter.com/' + data + '">' + data + '</a></td><td>' + userProfile.mentionsByCount[data] + '</td></tr>')
 				});
+			} else {
+				$("#mentionsdiv").remove();
 			}
+			if (Object.keys(userProfile.hashtagBycount).length != 0) {
+				$(Object.keys(userProfile.hashtagBycount)).each(function (index, data) {
+					$("#hashtagsbody").append('<tr> <td><a href="https://www.twitter.com/hashtag/' + data + '">' + data + '</a></td><td>' + userProfile.hashtagBycount[data] + '</td></tr>')
+				});
+			} else {
+				$("#hashtagdiv").remove();
 			}
-			else{
-			$("#timingsection").remove();
-			}
-			if(Object.keys(userProfile.mentionsByCount).length!=0){
-			$(Object.keys(userProfile.mentionsByCount)).each(function (index, data) {
-				$("#mentionsBody").append('<tr> <td><a href="https://www.twitter.com/' + data + '">' + data + '</a></td><td>' + userProfile.mentionsByCount[data] + '</td></tr>')
-			});
-			}
-			else{
-			$("#mentionsdiv").remove();
-			}
-			if(Object.keys(userProfile.hashtagBycount).length!=0){
-			$(Object.keys(userProfile.hashtagBycount)).each(function (index, data) {
-				$("#hashtagsbody").append('<tr> <td><a href="https://www.twitter.com/hashtag/' + data + '">' + data + '</a></td><td>' + userProfile.hashtagBycount[data] + '</td></tr>')
-			});
-			}
-			else{
-			$("#hashtagdiv").remove();
-			}
-			if(Object.keys(userProfile.wordByFrequency).length!=0){
-			$(Object.keys(userProfile.wordByFrequency)).each(function (index, data) {
-				$("#wordusagebody").append('<tr> <td>' + data + '</td><td>' + userProfile.wordByFrequency[data] + '</td></tr>')
-			});
-			}
-			else{
-			$("#wordusagediv").remove();
+			if (Object.keys(userProfile.wordByFrequency).length != 0) {
+				$(Object.keys(userProfile.wordByFrequency)).each(function (index, data) {
+					$("#wordusagebody").append('<tr> <td>' + data + '</td><td>' + userProfile.wordByFrequency[data] + '</td></tr>')
+				});
+			} else {
+				$("#wordusagediv").remove();
 			}
 		}
 	}).fail(function (err) {

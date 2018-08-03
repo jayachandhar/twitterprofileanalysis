@@ -79,11 +79,12 @@ public class TweetService {
         userProfile.setWordByFrequency(Util.sortMap(wordsCounts));
         userProfile.setMentionsByCount(Util.sortMap(userProfile.getMentionsByCount()));
         userProfile.setHashtagBycount(Util.sortMap(userProfile.getHashtagBycount()));
-
-        String tweetFrequency = calcStatusFrequency(statuses.get(0).getCreatedAt().getTime(),
-                statuses.get(statuses.size() - 1).getCreatedAt().getTime());
-        userProfile.setStatusFrequency(tweetFrequency.split(":")[0]);
-        userProfile.setTweetPerDay(tweetFrequency.split(":")[1]);
+        if (statuses.size() > 5) {
+            String tweetFrequency = calcStatusFrequency(statuses.get(0).getCreatedAt().getTime(),
+                    statuses.get(statuses.size() - 1).getCreatedAt().getTime());
+            userProfile.setStatusFrequency(tweetFrequency.split(":")[0]);
+            userProfile.setTweetPerDay(tweetFrequency.split(":")[1]);
+        }
     }
 
     private void profileAnalysis(UserProfile userProfile) throws TwitterException {

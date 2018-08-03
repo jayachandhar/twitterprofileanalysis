@@ -6,24 +6,24 @@ import java.util.TreeMap;
 
 public class UserProfile {
     private String screenName;
-    private String name="Not Available";
+    private String name = "Not Available";
     private String imageURL;
     private String joinedOn;
-    private String location="Not Available";
-    private String language="Not Available";
-    private String bio="Not Available";
+    private String location = "Not Available";
+    private String language = "Not Available";
+    private String bio = "Not Available";
     private int followerCount;
     private int followingCount;
     private int tweetCount;
     private int originalTweetCount;
     private int retweetCount;
-    private float ratio=0;
-    private String statusFrequency="Not Available";
-    private String tweetPerDay="Not Available";
+    private float ratio = 0;
+    private String statusFrequency = "Not Available";
+    private String tweetPerDay = "Not Available";
     private Map<String, Integer> wordByFrequency = new LinkedHashMap<>();
     private Map<String, Integer> hashtagBycount = new LinkedHashMap<>();
     private Map<String, Integer> mentionsByCount = new LinkedHashMap<>();
-    private Map<Integer, Integer> tweetTiming=new TreeMap<>();
+    private Map<Integer, Integer> tweetTiming = new TreeMap<>();
 
     public String getScreenName() {
         return screenName;
