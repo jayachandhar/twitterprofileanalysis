@@ -90,9 +90,11 @@ public class TweetService {
     private void profileAnalysis(UserProfile userProfile) throws TwitterException {
         User user = authenticatedTwitter.showUser(userProfile.getScreenName());
         userProfile.setName(StringUtils.isBlank(user.getName()) ? "Not Available" : user.getName());
-        userProfile.setJoinedOn(StringUtils.isBlank(user.getCreatedAt().toString()) ? "Not Available" : user.getCreatedAt().toString());
+        userProfile.setJoinedOn(StringUtils.isBlank(user.getCreatedAt().toString()) ?
+                "Not Available" : user.getCreatedAt().toString());
         userProfile.setLocation(StringUtils.isBlank(user.getLocation()) ? "Not Available" : user.getLocation());
-        Locale loc = LocaleUtils.toLocale(user.getLang().contains("-") ? user.getLang().split("-")[0] + "_" + user.getLang().split("-")[1].toUpperCase() : user.getLang());
+        Locale loc = LocaleUtils.toLocale(user.getLang().contains("-") ?
+                user.getLang().split("-")[0] + "_"+ user.getLang().split("-")[1].toUpperCase() : user.getLang());
         String language = loc.getDisplayLanguage();
         userProfile.setLanguage(language);
         userProfile.setBio(StringUtils.isBlank(user.getDescription()) ? "Not Available" : user.getDescription());
