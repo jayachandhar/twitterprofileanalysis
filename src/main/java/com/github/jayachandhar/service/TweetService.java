@@ -66,19 +66,13 @@ public class TweetService {
                     wordsCounts.put(word.toLowerCase(), wordsCounts.containsKey(word.toLowerCase()) ?
                             wordsCounts.get(word.toLowerCase()) + 1 : 1);
         }
-        Map<String, Integer> wordsCountsDup = new HashMap<>(wordsCounts);
-        for (Map.Entry<String, Integer> wordcount : wordsCountsDup.entrySet()) {
-            if (wordcount.getValue() < 3)
-                wordsCounts.remove(wordcount.getKey());
-        }
-
         userProfile.setRetweetCount(wordsCounts.containsKey("rt") ? wordsCounts.remove("rt") : 0);
         userProfile.setOriginalTweetCount(userProfile.getRetweetCount() == 0 ?
                 userProfile.getTweetCount() : statuses.size() - userProfile.getRetweetCount());
 
-        userProfile.setWordByFrequency(Util.sortMap(wordsCounts));
-        userProfile.setMentionsByCount(Util.sortMap(userProfile.getMentionsByCount()));
-        userProfile.setHashtagBycount(Util.sortMap(userProfile.getHashtagBycount()));
+        userProfile.setWordByFrequency(Util.sortMap(wordsCounts, 3));
+        userProfile.setMentionsByCount(Util.sortMap(userProfile.getMentionsByCount(), 1));
+        userProfile.setHashtagBycount(Util.sortMap(userProfile.getHashtagBycount(), 1));
         if (statuses.size() > 5) {
             String tweetFrequency = calcStatusFrequency(statuses.get(0).getCreatedAt().getTime(),
                     statuses.get(statuses.size() - 1).getCreatedAt().getTime());
@@ -94,7 +88,7 @@ public class TweetService {
                 "Not Available" : user.getCreatedAt().toString());
         userProfile.setLocation(StringUtils.isBlank(user.getLocation()) ? "Not Available" : user.getLocation());
         Locale loc = LocaleUtils.toLocale(user.getLang().contains("-") ?
-                user.getLang().split("-")[0] + "_"+ user.getLang().split("-")[1].toUpperCase() : user.getLang());
+                user.getLang().split("-")[0] + "_" + user.getLang().split("-")[1].toUpperCase() : user.getLang());
         String language = loc.getDisplayLanguage();
         userProfile.setLanguage(language);
         userProfile.setBio(StringUtils.isBlank(user.getDescription()) ? "Not Available" : user.getDescription());
