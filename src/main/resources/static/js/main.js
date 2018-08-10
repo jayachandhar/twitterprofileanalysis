@@ -6,7 +6,7 @@
 			$("#profileimage").attr("src", userProfile.imageURL);
 			$("#name").text(userProfile.name);
 			$("#screenName").text(userProfile.screenName);
-			$("#screenName").attr("href","https://twitter.com/"+userProfile.screenName);
+			$("#screenName").attr("href", "https://twitter.com/" + userProfile.screenName);
 			$("#joinedOn").text(userProfile.joinedOn.toString());
 			$("#location").text(userProfile.location);
 			$("#language").text(userProfile.language);
@@ -20,10 +20,9 @@
 			if (ctx) {
 				ctx.height = 280;
 				var myChart = new Chart(ctx, {
-					type: 'doughnut',
+					type: 'pie',
 					data: {
 						datasets: [{
-							label: "followers vs following",
 							data: [userProfile.followerCount, userProfile.followingCount],
 							backgroundColor: [
 								'#00b5e9',
@@ -49,10 +48,15 @@
 					options: {
 						maintainAspectRatio: false,
 						responsive: true,
-						cutoutPercentage: 55,
 						animation: {
 							animateScale: true,
 							animateRotate: true
+						},
+						pieceLabel: {
+							render: function (args) {
+								return args.percentage + "%" + "\n" + "count:" + args.value;
+							},
+							fontColor: '#FFFFFF'
 						},
 						legend: {
 							display: false
@@ -70,7 +74,7 @@
 				if (ctx) {
 					ctx.height = 280;
 					var myChart = new Chart(ctx, {
-						type: 'doughnut',
+						type: 'pie',
 						data: {
 							datasets: [{
 								data: [userProfile.originalTweetCount, userProfile.retweetCount],
@@ -98,10 +102,13 @@
 						options: {
 							maintainAspectRatio: false,
 							responsive: true,
-							cutoutPercentage: 55,
 							animation: {
 								animateScale: true,
 								animateRotate: true
+							},
+							pieceLabel: {
+								render: 'percentage',
+								fontColor: '#FFFFFF'
 							},
 							legend: {
 								display: false

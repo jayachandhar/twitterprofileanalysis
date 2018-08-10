@@ -19,12 +19,13 @@ public class TweetService {
 
     public TweetService() {
         authenticatedTwitter = TwitterFactory.getSingleton();
-        sdf = new SimpleDateFormat("HH");
+        sdf = new SimpleDateFormat();
         sdf.setTimeZone(TimeZone.getTimeZone("IST"));
     }
 
     private void getTweetAnalysis(UserProfile userProfile) throws TwitterException {
         List<Status> statuses;
+        sdf.applyPattern("HH");
         Paging paging = new Paging(1, 100);
         statuses = authenticatedTwitter.getUserTimeline(userProfile.getScreenName(), paging);
         StringBuilder content = new StringBuilder();
@@ -82,10 +83,11 @@ public class TweetService {
     }
 
     private void profileAnalysis(UserProfile userProfile) throws TwitterException {
+        sdf.applyPattern("dd MMM yyyy HH:mm:ss z");
         User user = authenticatedTwitter.showUser(userProfile.getScreenName());
         userProfile.setName(StringUtils.isBlank(user.getName()) ? "Not Available" : user.getName());
         userProfile.setJoinedOn(StringUtils.isBlank(user.getCreatedAt().toString()) ?
-                "Not Available" : user.getCreatedAt().toString());
+                "Not Available" : sdf.format(user.getCreatedAt()));
         userProfile.setLocation(StringUtils.isBlank(user.getLocation()) ? "Not Available" : user.getLocation());
         Locale loc = LocaleUtils.toLocale(user.getLang().contains("-") ?
                 user.getLang().split("-")[0] + "_" + user.getLang().split("-")[1].toUpperCase() : user.getLang());
