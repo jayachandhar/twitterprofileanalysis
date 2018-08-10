@@ -27,7 +27,7 @@ public class TwitterController {
             return profile;
         } catch (Exception e) {
             ResponseEntity responseEntity = ExceptionUtils.getExceptionReason(e);
-            logger.error("unable to process for ScreenName : " + screenName + " Reason:" + responseEntity.getBody());
+            logger.error("Request failed for ScreenName : " + screenName + " => " + ((String) responseEntity.getBody()).replace("Content not available.\nReason : ", ""));
             return responseEntity;
         }
     }
