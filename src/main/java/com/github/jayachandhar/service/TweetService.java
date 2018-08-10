@@ -83,7 +83,7 @@ public class TweetService {
     }
 
     private void profileAnalysis(UserProfile userProfile) throws TwitterException {
-        sdf.applyPattern("d/M/yy h:mma z");
+        sdf.applyPattern("dd/MM/yy hh:mm a z");
         User user = authenticatedTwitter.showUser(userProfile.getScreenName());
         userProfile.setName(StringUtils.isBlank(user.getName()) ? "Not Available" : user.getName());
         userProfile.setJoinedOn(StringUtils.isBlank(user.getCreatedAt().toString()) ?
