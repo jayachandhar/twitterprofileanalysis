@@ -7,8 +7,7 @@
 			$("#name").text(userProfile.name);
 			$("#screenName").text(userProfile.screenName);
 			$("#screenName").attr("href","https://twitter.com/"+userProfile.screenName);
-			var date = new Date(Date(userProfile.joinedOn.toString));
-			$("#joinedOn").text(date.toLocaleString());
+			$("#joinedOn").text(userProfile.joinedOn.toString());
 			$("#location").text(userProfile.location);
 			$("#language").text(userProfile.language);
 			$("#bio").text(userProfile.bio);
