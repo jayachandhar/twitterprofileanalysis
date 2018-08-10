@@ -11,6 +11,10 @@
 			$("#location").text(userProfile.location);
 			$("#language").text(userProfile.language);
 			$("#bio").text(userProfile.bio);
+			$("#followers").text("Followers:"+" "+userProfile.followerCount);
+            $("#following").text("Following:"+" "+userProfile.followingCount);
+           	$("#OT").text("Orignial Tweets:"+" "+userProfile.originalTweetCount);
+            $("#RT").text("Retweets:"+" "+userProfile.retweetCount);
 			$("#tweetCount").text(userProfile.tweetCount);
 			$("#ratio").text(userProfile.ratio);
 			$("#statusFrequency").text(userProfile.statusFrequency);
@@ -53,9 +57,7 @@
 							animateRotate: true
 						},
 						pieceLabel: {
-							render: function (args) {
-								return args.percentage + "%" + "\n" + "count:" + args.value;
-							},
+							render: 'percentage',
 							fontColor: '#FFFFFF'
 						},
 						legend: {
