@@ -29,8 +29,8 @@ public class TwitterController {
         } catch (Exception e) {
             String reason = ExceptionUtils.getExceptionReason(e);
             logger.error("Request failed for ScreenName : " + screenName + " => " + reason);
-            return new ResponseEntity("Content not available try after some time." + (reason.equals("") ? "" : "\nReason : " + reason)
-                    , HttpStatus.BAD_REQUEST);
+            return new ResponseEntity("Content not available try after some time." + (reason.equals("") ?
+                    "" : "\nReason : " + reason), HttpStatus.BAD_REQUEST);
         }
     }
 }
