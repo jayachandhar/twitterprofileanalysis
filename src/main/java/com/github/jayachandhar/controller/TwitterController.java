@@ -5,6 +5,7 @@ import com.github.jayachandhar.utils.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,9 +27,10 @@ public class TwitterController {
             logger.debug("Request processed for Screen Name : " + screenName);
             return profile;
         } catch (Exception e) {
-            ResponseEntity responseEntity = ExceptionUtils.getExceptionReason(e);
-            logger.error("Request failed for ScreenName : " + screenName + " => " + ((String) responseEntity.getBody()).replace("Content not available.\nReason : ", ""));
-            return responseEntity;
+            String reason = ExceptionUtils.getExceptionReason(e);
+            logger.error("Request failed for ScreenName : " + screenName + " => " + reason);
+            return new ResponseEntity("Content not available try after some time." + (reason.equals("") ? "" : "\nReason : " + reason)
+                    , HttpStatus.BAD_REQUEST);
         }
     }
 }

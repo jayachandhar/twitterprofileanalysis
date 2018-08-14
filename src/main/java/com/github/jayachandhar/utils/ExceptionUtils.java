@@ -1,11 +1,9 @@
 package com.github.jayachandhar.utils;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import twitter4j.TwitterException;
 
 public class ExceptionUtils {
-    public static ResponseEntity getExceptionReason(Exception e) {
+    public static String getExceptionReason(Exception e) {
         if (e.getClass() == TwitterException.class) {
             String reason = "";
             if (((TwitterException) e).getStatusCode() == 401) {
@@ -19,10 +17,9 @@ public class ExceptionUtils {
             if (((TwitterException) e).getStatusCode() == 403) {
                 reason = "This screen name has been modified recently. please try with the new screen name.";
             }
-            return new ResponseEntity("Content not available." + (reason.equals("") ? "" : "\nReason : " + reason)
-                    , HttpStatus.BAD_REQUEST);
+            return reason;
         } else
-            return new ResponseEntity("Content not available try after some time.", HttpStatus.BAD_REQUEST);
+            return null;
 
 
     }
