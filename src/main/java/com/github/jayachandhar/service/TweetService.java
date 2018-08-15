@@ -36,12 +36,6 @@ public class TweetService {
             return;
         }
         for (Status status : statuses) {
-            //uncomment to avoid replies
-            // content.append(status.getInReplyToScreenName() != null ? "" : status.getText() + " ");
-
-            //uncomment to avoid retweets
-            // content.append(status.getText().contains("RT") ? "" : status.getText() + " ");
-
             content.append(status.getText().concat(" "));
             hashtags.addAll(Arrays.asList(status.getHashtagEntities()));
             userMentionEntities.addAll(Arrays.asList(status.getUserMentionEntities()));
@@ -60,7 +54,6 @@ public class TweetService {
         }
         userProfile.setTweetTiming(tweetTiming);
         Map<String, Integer> wordsCounts = new HashMap<>();
-        // List<Map.Entry<String, Integer>> list = new LinkedList<>();
         for (String word : content.toString().split(" ")) {
             if (StringUtils.isAlpha(word) && StringUtils.isAsciiPrintable(word))
                 if (!Util.WORDS_TO_AVOID.contains(word.toLowerCase()))
