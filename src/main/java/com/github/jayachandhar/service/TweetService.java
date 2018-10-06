@@ -64,9 +64,9 @@ public class TweetService {
         userProfile.setOriginalTweetCount(userProfile.getRetweetCount() == 0 ?
                 userProfile.getTweetCount() : statuses.size() - userProfile.getRetweetCount());
 
-        userProfile.setWordByFrequency(Util.sortMap(wordsCounts, 3));
-        userProfile.setMentionsByCount(Util.sortMap(userProfile.getMentionsByCount(), 1));
-        userProfile.setHashtagBycount(Util.sortMap(userProfile.getHashtagBycount(), 1));
+        userProfile.setWordByFrequency(Util.sortMap(wordsCounts));
+        userProfile.setMentionsByCount(Util.sortMap(userProfile.getMentionsByCount()));
+        userProfile.setHashtagBycount(Util.sortMap(userProfile.getHashtagBycount()));
         if (statuses.size() > 5) {
             String tweetFrequency = calcStatusFrequency(statuses.get(0).getCreatedAt().getTime(),
                     statuses.get(statuses.size() - 1).getCreatedAt().getTime());
