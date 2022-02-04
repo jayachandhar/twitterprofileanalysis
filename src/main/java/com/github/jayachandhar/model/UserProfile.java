@@ -10,7 +10,6 @@ public class UserProfile {
     private String imageURL;
     private String joinedOn;
     private String location = "Not Available";
-    private String language = "Not Available";
     private String bio = "Not Available";
     private int followerCount;
     private int followingCount;
@@ -63,14 +62,6 @@ public class UserProfile {
 
     public void setLocation(String location) {
         this.location = location;
-    }
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
     }
 
     public String getBio() {
@@ -185,7 +176,6 @@ public class UserProfile {
                 ", imageURL='" + imageURL + '\'' +
                 ", joinedOn='" + joinedOn + '\'' +
                 ", location='" + location + '\'' +
-                ", language='" + language + '\'' +
                 ", bio='" + bio + '\'' +
                 ", followerCount=" + followerCount +
                 ", followingCount=" + followingCount +

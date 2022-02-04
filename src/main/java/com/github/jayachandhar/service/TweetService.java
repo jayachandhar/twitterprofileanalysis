@@ -82,10 +82,6 @@ public class TweetService {
         userProfile.setJoinedOn(StringUtils.isBlank(user.getCreatedAt().toString()) ?
                 "Not Available" : sdf.format(user.getCreatedAt()));
         userProfile.setLocation(StringUtils.isBlank(user.getLocation()) ? "Not Available" : user.getLocation());
-        Locale loc = LocaleUtils.toLocale(user.getLang().contains("-") ?
-                user.getLang().split("-")[0] + "_" + user.getLang().split("-")[1].toUpperCase() : user.getLang());
-        String language = loc.getDisplayLanguage();
-        userProfile.setLanguage(language);
         userProfile.setBio(StringUtils.isBlank(user.getDescription()) ? "Not Available" : user.getDescription());
         userProfile.setTweetCount(user.getStatusesCount());
         userProfile.setFollowingCount(user.getFriendsCount());
