@@ -14,8 +14,8 @@ import java.util.TimeZone;
 
 @Service
 public class TweetService {
-    private Twitter authenticatedTwitter;
-    private SimpleDateFormat sdf;
+    private final Twitter authenticatedTwitter;
+    private final SimpleDateFormat sdf;
 
     public TweetService() {
         authenticatedTwitter = TwitterFactory.getSingleton();
