@@ -1,2 +1,5 @@
 .idea
 twitter-profile-analysis.iml
+target
+*.log
+twitter4j.properties
