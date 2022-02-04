@@ -9,7 +9,6 @@
 			$("#screenName").attr("href", "https://twitter.com/" + userProfile.screenName);
 			$("#joinedOn").text(userProfile.joinedOn.toString());
 			$("#location").text(userProfile.location);
-			$("#language").text(userProfile.language);
 			$("#bio").text(userProfile.bio);
 			$("#followers").text("Followers:"+" "+userProfile.followerCount);
             $("#following").text("Following:"+" "+userProfile.followingCount);
